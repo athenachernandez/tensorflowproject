@@ -8,6 +8,8 @@ import tensorflow.keras.callbacks as callbacks
 from tensorflow.data import Dataset
 from tensorflow.image import rgb_to_grayscale
 import numpy as np
+import pickle
+
 
 
 # Change numbers in dense layers, batch size, learning rate, data augmentation (adding more images)
@@ -111,3 +113,7 @@ net.model.fit(
     validation_batch_size = 32,
     # callbacks = callbacks
 )
+save_path = './lego_model_save'
+net.model.save(save_path)
+with open(f'{save_path}/class_names.data', 'wb') as f:
+    pickle.dump(train.class_names, f)
