@@ -8,11 +8,12 @@
 ### CNN Calculations 🔢
 - Image sizes were all square
     - Original was 200x200x3, but I inputted it as 200x200x1
-- Chose to grayscale images to quicken run time because they were gray, but still in RGB format
-- Chose to use more `Conv2D()` and `MaxPool2D()` less than in example code because it helped improve my CNN's accuracy
-- Didn't use `Dropout()` because reduced my accuracy
-- Originally tried to use many `Conv2D()`s in a row, but maxpooling every other performed much better
-    - Both were uploaded to Whipple Hill
+    - Chose to grayscale images to quicken run time because they were gray, but still in RGB format
+- Played around with the placement of certain functions
+    - Chose to use alternate `Conv2D()` and `MaxPool2D()` similar to the example code because it helped improve my CNN's accuracy
+    - Other variations including using `Conv2D()` a lot didn't work that well; maxpooling every other performed much better
+        - I uploaded this calculation and the good CNN to Drive
+    - Didn't use `Dropout()` because it reduced my accuracy
 ### Live Feed 📹
 - Grayscaled input
 - Didn't implement a background/none class, so that is my next step to improvement
