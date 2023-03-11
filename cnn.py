@@ -9,6 +9,7 @@ from tensorflow.data import Dataset
 from tensorflow.image import rgb_to_grayscale
 import numpy as np
 import pickle
+import tensorflow.image as image
 
 # Change numbers in dense layers, batch size, learning rate, data augmentation (adding more images)
 train = utils.image_dataset_from_directory(
@@ -40,20 +41,17 @@ test = utils.image_dataset_from_directory(
     subset = 'validation',
 )
 
-# # Data Augmentation Section
-# # You can have multiple layers, but first one always needs the input_shape
-rotation = models.Sequential([
-    layers.RandomRotation(0.25, input_shape = (200, 200, 1))
-])
-# # train.map() applies the transformation in parentheses to each pair x,y 
-# # in the dataset.  We only need to transform the x-values, we just pass
-# # the y-values along passively.  Notice that the output of the lambda
-# # function is a 2-tuple, which is the transformed image followed
-rotated = train.map(lambda x, y: (rotation(x), y))
-# # Make sure you create *all* the transformed copies before assembling
-# # them into a new training set.
-train = train.concatenate(rotated)
+# Data Augmentation (went from 132 steps to 396)
+# rotation = models.Sequential([
+#     layers.RandomRotation(0.25, input_shape = (200, 200, 1))
+# ])
+# rotated = train.map(lambda x, y: (rotation(x), y))
+flipped = train.map(lambda x, y: (image.flip_left_right(x), y))
+brightness = train.map(lambda x, y: (image.adjust_brightness(x, delta=0.1), y))
 
+# train = train.concatenate(rotated)
+train = train.concatenate(flipped)
+train = train.concatenate(brightness)
 
 
 class Net():
@@ -100,7 +98,7 @@ class Net():
             activation = 'relu',
         ))
         self.model.add(layers.Dense(
-            16,   # Number of classes
+            15,   # Number of classes
             activation = 'softmax',
         ))
         # Also try CategoricalCrossentropy()
